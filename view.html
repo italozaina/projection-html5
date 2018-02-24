@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>View - Projection HTML5</title>
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/projection.css"> 
+  <style type="text/css">
+    body {
+      background: url("img/projection-bg.jpg") no-repeat center center fixed; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+
+    .songtitle{
+      top: 1.5vh;
+      left: 5vh;
+      position: absolute;
+      display: none;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+<!-- 2. Create hidden header/footer <div> -->
+
+  <div class="reveal">
+    <header class="songtitle"><small></small></header>
+  
+    <div class="slides">
+      <section>
+        <h1>teste</h1>
+      </section>
+      <section data-state="showtitle">
+      <style>
+        .showtitle header.songtitle small:after{ content: "A ele a glória"; }
+        .showtitle header.songtitle{ display: table; }         
+      </style>
+       PORQUE DELE E POR ELE<br>
+       PARA ELE<br>
+       SÃO TODAS AS COISAS
+      </section>      
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/jquery-3.3.1.min.js"></script>  
+  <script src="js/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: false,
+      progress: false,
+      history: false,
+      keyboard: true,
+      center: true,
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      transition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
+    });  
+
+    window.addEventListener( 'message', function( event ) {          
+      $('.slides').html(event.data);
+      reloadReveal();
+      this.changeSlide(0);
+    } );
+
+    function changeSlide(number) {
+      Reveal.slide(number, number, number);
+    }
+
+    function clearSlide(status) {
+      if (status)
+        $('.slides').fadeOut('slow');
+      else
+        $('.slides').fadeIn('slow');
+    }       
+
+    function reloadReveal(){
+      Reveal.initialize({
+        controls: false,
+        progress: false,
+        history: false,
+        keyboard: true,
+        // center: true,
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
+      });      
+    }
+    
+  </script>
+</body>
+</html>
