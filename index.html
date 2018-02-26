@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="css/themes/default/style.min.css">
   <link rel="stylesheet" href="css/fa-svg-with-js.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">  
+
+  <link rel="stylesheet" href="css/perfect-scrollbar.css">
 </head>
 <body>
 
@@ -51,7 +53,7 @@
             <input class="form-control" id="treesearch" type="text" placeholder="Pesquisar louvor">
             </div>
             <div id="tree_list1">
-              <div id="jstree_demo_div"></div>  
+              <div id="songList"></div>  
             </div>
           </div>
         </div>                
@@ -59,7 +61,7 @@
       <div class="col-6">
       <div class="card">
       <div class="card-header text-light bg-secondary">
-        <ul class="nav nav-tabs card-header-tabs nav-fill bg-dark">
+        <ul class="nav nav-tabs card-header-tabs nav-fill center-header-tabs">
           <li class="nav-item">
             <a class="nav-link active" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="live" aria-selected="true">Ao Vivo</a>
           </li>
@@ -69,14 +71,16 @@
         </ul>         
       </div>   
           
-        <div class="card-block tab-content" id="myTabContent">
+        <div class="card-block tab-content center-block-tabs" id="myTabContent">
           <div class="tab-pane fade show active" id="live" role="tabpanel" aria-labelledby="live-tab">
           <!-- <button id="startProjection" class="btn btn-success">Iniciar projeção</button> -->
           <!-- <br><br> -->
-          <table id="livesongs" class="table table-striped table-bordered mt-2">
-              <tbody>                
-              </tbody>
-          </table>
+          <div id="scrollblock">
+            <table id="livesongs" class="table table-striped table-bordered mt-2">
+                <tbody>                
+                </tbody>
+            </table>
+          </div>
           </div>
           <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
             <form class="p-2">
@@ -135,7 +139,7 @@
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>  
 <script src="js/jstree.min.js"></script>
-<script src="js/jsonreader.js"></script>
+<script src="js/perfect-scrollbar.js"></script>
 <script src="js/core.js"></script>
 </body>
 </html>

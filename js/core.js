@@ -10,10 +10,9 @@ var isFirefox = typeof InstallTrigger !== 'undefined';
 function loadJSON(callback) {   
   var xobj = new XMLHttpRequest();
   xobj.overrideMimeType("application/json");
-  xobj.open('GET', 'data/data.json', true); // Replace 'my_data' with the path to your file
+  xobj.open('GET', 'data/data.json', true); 
   xobj.onreadystatechange = function () {
     if (xobj.readyState == 4 && xobj.status == 200) {
-      // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
       callback(xobj.responseText);
     }
   };
@@ -41,16 +40,12 @@ function carregaLouvores(){
       // }
     });
 
-    $('#jstree_demo_div').jstree(true).settings.core.data = songList;
-    $('#jstree_demo_div').jstree(true).refresh();
-    // reloadSongList();
+    $('#songList').jstree(true).settings.core.data = songList;
+    $('#songList').jstree(true).refresh();
+
     });    
   } else {
-    console.log("teste");
     $('#carregarModal').modal('toggle')
-    // JSONReader.read((result) => {
-    //     console.log(result); 
-    // });
   }
   
 }
@@ -79,43 +74,14 @@ $("#filedata").change(function() {
         // }
       });
 
-      $('#jstree_demo_div').jstree(true).settings.core.data = songList;
-      $('#jstree_demo_div').jstree(true).refresh();      
+      $('#songList').jstree(true).settings.core.data = songList;
+      $('#songList').jstree(true).refresh();      
     }
 
     // when the file is read it triggers the onload event above.
     reader.readAsText(file);    
     $('#carregarModal').modal('toggle')
 });
-
-// function reloadSongList(){
-//   // popula tabela com o json
-//   $.each(louvores, function(i, louvor) {
-//       if(i == 0) {
-//         $('#songs tbody').append('<tr data-id="'+i+'" class="active"><td>'+louvor.title+'</td><td>'+louvor.content+'</td></tr>');
-//       } else {
-//         $('#songs tbody').append('<tr data-id="'+i+'"><td>'+louvor.title+'</td><td>'+louvor.content+'</td></tr>');
-//       }
-//   });
-
-//     $('#songs > tbody > tr').click(function() {    
-//       $( this ).parent().find( 'tr.active' ).removeClass( 'active' );
-//       $( this ).addClass( 'active' );
-//       louvorAtivo = $(this).attr("data-id");      
-//       $('#title').val(louvores[louvorAtivo].title);    
-//       $('#content').val(louvores[louvorAtivo].content);
-//     });
-
-//     $('#songs > tbody > tr').dblclick(function() {
-//       var louvor = { id: louvorAtivo, type: "s" }
-//       projecao.push(louvor);
-//       reloadProjectionList();
-//     });
-
-//     $('#title').val(louvores[louvorAtivo].title);    
-//     $('#content').val(louvores[louvorAtivo].content);  
-// }
-
 
 function reloadProjectionList(){
   if(projecao.length == 0){
@@ -206,7 +172,7 @@ function generateLiveList(){
   $('#livesongs > tbody > tr').click(function() {    
     $( this ).parent().find( 'tr.active' ).removeClass( 'active' );
     $( this ).addClass( 'active' );
-    projecaoAtiva = $(this).attr("data-id");
+    projecaoAtiva = parseInt($(this).attr("data-id"));
     mudaSlide();
   });
 
@@ -230,6 +196,9 @@ function updateViewSlides(){
 function mudaProjecaoAtiva(){
   $('#livesongs > tbody > tr.active').removeClass( 'active' );
   $('#livesongs > tbody > tr[data-id="'+projecaoAtiva+'"]').addClass( 'active' );
+  $('#scrollblock').scrollTop(
+      $('#livesongs > tbody > tr[data-id="'+projecaoAtiva+'"]').offset().top - $('#scrollblock').offset().top + $('#scrollblock').scrollTop()
+  );   
   mudaSlide();
 }
 
@@ -270,7 +239,7 @@ $(document).on('keydown', function(e) {
           }
           case 39: // right
           {
-            if(rows.length > 0 && rows.length > projecaoAtiva + 1){
+            if(rows.length > projecaoAtiva + 1){
               projecaoAtiva++;
               mudaProjecaoAtiva();
             }          
@@ -280,7 +249,7 @@ $(document).on('keydown', function(e) {
 
           case 40: // down
           {
-            if(rows.length > 0 && rows.length > projecaoAtiva + 1){
+            if(rows.length > projecaoAtiva + 1){
               projecaoAtiva++;
               mudaProjecaoAtiva();
             }          
@@ -306,14 +275,14 @@ $('#startProjection').click(function(){
 
 window.onload = function() {
   carregaLouvores();
-  startProjection();
+  // startProjection();
   reloadProjectionList();
 };
 
 $("#msgSave").hide();
 
 $(function () { 
-  $('#jstree_demo_div').jstree({ 'core' : {
+  $('#songList').jstree({ 'core' : {
       'data' : []
   },
   "types" : {
@@ -348,19 +317,19 @@ $(function () {
     if(to) { clearTimeout(to); }
     to = setTimeout(function () {
       var v = $('#treesearch').val();
-      $('#jstree_demo_div').jstree(true).search(v);
+      $('#songList').jstree(true).search(v);
     }, 250);
   });
 
   /* Toggle between folder open and folder closed */
-  $("#jstree_demo_div").on('open_node.jstree', function (event, data) {
+  $("#songList").on('open_node.jstree', function (event, data) {
       data.instance.set_type(data.node,'f-open');
   });
-  $("#jstree_demo_div").on('close_node.jstree', function (event, data) {
+  $("#songList").on('close_node.jstree', function (event, data) {
       data.instance.set_type(data.node,'f-closed');
   });
 
-  $('#jstree_demo_div').on("changed.jstree", function (e, data) {
+  $('#songList').on("changed.jstree", function (e, data) {
     var louvor = {title: "", content: ""};
     if(data.node != undefined && data.node != null && data.node.data != null){
         louvor = data.node.data;
@@ -371,7 +340,7 @@ $(function () {
     // console.log(louvor);
   });
 
-  $('#jstree_demo_div').bind("dblclick.jstree", function (e) {
+  $('#songList').bind("dblclick.jstree", function (e) {
       var instance = $.jstree.reference(this),
       node = instance.get_node(e.target);
      // Do my action
@@ -384,3 +353,5 @@ $(function () {
   });
 
 });
+
+var ps = new PerfectScrollbar('#scrollblock');
