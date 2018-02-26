@@ -5,6 +5,8 @@ var projecaoAtiva = 0;
 var windowView;
 var viewSlides = "";
 
+var isFirefox = typeof InstallTrigger !== 'undefined';
+
 function loadJSON(callback) {   
   var xobj = new XMLHttpRequest();
   xobj.overrideMimeType("application/json");
@@ -19,41 +21,100 @@ function loadJSON(callback) {
 }
 
 function carregaLouvores(){
-  loadJSON(function(response) {
-  // Parse JSON string into object
-  louvores = JSON.parse(response);
+  if(isFirefox){
+    loadJSON(function(response) {
 
-  reloadSongList();
-  });
-}
+    louvores = JSON.parse(response);
 
-function reloadSongList(){
-  // popula tabela com o json
-  $.each(louvores, function(i, louvor) {
-      if(i == 0) {
-        $('#songs tbody').append('<tr data-id="'+i+'" class="active"><td>'+louvor.title+'</td><td>'+louvor.content+'</td></tr>');
-      } else {
-        $('#songs tbody').append('<tr data-id="'+i+'"><td>'+louvor.title+'</td><td>'+louvor.content+'</td></tr>');
-      }
-  });
-
-    $('#songs > tbody > tr').click(function() {    
-      $( this ).parent().find( 'tr.active' ).removeClass( 'active' );
-      $( this ).addClass( 'active' );
-      louvorAtivo = $(this).attr("data-id");      
-      $('#title').val(louvores[louvorAtivo].title);    
-      $('#content').val(louvores[louvorAtivo].content);
+    var songList = [{
+             text : 'Louvores',
+             state : {
+               opened : true
+             },
+              children: []
+             }];
+    $.each(louvores, function(i, louvor) {
+      // if(i == 0){
+        // songList[0].children.push({id: i, text:louvor.title, type:"song", data:louvor, selected: true});
+      // }else{
+        songList[0].children.push({id: ""+i, text:louvor.title, type:"song", data:louvor});
+      // }
     });
 
-    $('#songs > tbody > tr').dblclick(function() {
-      var louvor = { id: louvorAtivo, type: "s" }
-      projecao.push(louvor);
-      reloadProjectionList();
-    });
-
-    $('#title').val(louvores[louvorAtivo].title);    
-    $('#content').val(louvores[louvorAtivo].content);  
+    $('#jstree_demo_div').jstree(true).settings.core.data = songList;
+    $('#jstree_demo_div').jstree(true).refresh();
+    // reloadSongList();
+    });    
+  } else {
+    console.log("teste");
+    $('#carregarModal').modal('toggle')
+    // JSONReader.read((result) => {
+    //     console.log(result); 
+    // });
+  }
+  
 }
+
+$("#filedata").change(function() {
+    var file = this.files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+      var contents = event.target.result;
+      louvores = JSON.parse(contents);
+
+      var songList = [{
+               text : 'Louvores',
+               state : {
+                 opened : true
+               },
+                children: []
+               }];
+      $.each(louvores, function(i, louvor) {
+        // if(i == 0){
+          // songList[0].children.push({id: i, text:louvor.title, type:"song", data:louvor, selected: true});
+        // }else{
+          songList[0].children.push({id: ""+i, text:louvor.title, type:"song", data:louvor});
+        // }
+      });
+
+      $('#jstree_demo_div').jstree(true).settings.core.data = songList;
+      $('#jstree_demo_div').jstree(true).refresh();      
+    }
+
+    // when the file is read it triggers the onload event above.
+    reader.readAsText(file);    
+    $('#carregarModal').modal('toggle')
+});
+
+// function reloadSongList(){
+//   // popula tabela com o json
+//   $.each(louvores, function(i, louvor) {
+//       if(i == 0) {
+//         $('#songs tbody').append('<tr data-id="'+i+'" class="active"><td>'+louvor.title+'</td><td>'+louvor.content+'</td></tr>');
+//       } else {
+//         $('#songs tbody').append('<tr data-id="'+i+'"><td>'+louvor.title+'</td><td>'+louvor.content+'</td></tr>');
+//       }
+//   });
+
+//     $('#songs > tbody > tr').click(function() {    
+//       $( this ).parent().find( 'tr.active' ).removeClass( 'active' );
+//       $( this ).addClass( 'active' );
+//       louvorAtivo = $(this).attr("data-id");      
+//       $('#title').val(louvores[louvorAtivo].title);    
+//       $('#content').val(louvores[louvorAtivo].content);
+//     });
+
+//     $('#songs > tbody > tr').dblclick(function() {
+//       var louvor = { id: louvorAtivo, type: "s" }
+//       projecao.push(louvor);
+//       reloadProjectionList();
+//     });
+
+//     $('#title').val(louvores[louvorAtivo].title);    
+//     $('#content').val(louvores[louvorAtivo].content);  
+// }
 
 
 function reloadProjectionList(){
@@ -146,9 +207,7 @@ function generateLiveList(){
     $( this ).parent().find( 'tr.active' ).removeClass( 'active' );
     $( this ).addClass( 'active' );
     projecaoAtiva = $(this).attr("data-id");
-    if (typeof(windowView)!='undefined' && !windowView.closed) {
-      windowView.changeSlide(projecaoAtiva);
-    }   
+    mudaSlide();
   });
 
   projecaoAtiva = 0;
@@ -159,25 +218,37 @@ function generateLiveList(){
 
 function updateViewSlides(){
   if (typeof(windowView)!='undefined' && !windowView.closed) {
-    windowView.postMessage(viewSlides, "*");
+    windowView.postMessage(JSON.stringify( {
+          host: 'projection-html5',
+          function: 'reloadReveal',
+          url: window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search,
+          data: viewSlides
+        } ), "*");
   }
 }
 
 function mudaProjecaoAtiva(){
   $('#livesongs > tbody > tr.active').removeClass( 'active' );
   $('#livesongs > tbody > tr[data-id="'+projecaoAtiva+'"]').addClass( 'active' );
+  mudaSlide();
+}
+
+function mudaSlide(){
   if (typeof(windowView)!='undefined' && !windowView.closed) {
-    windowView.changeSlide(projecaoAtiva);
+    windowView.postMessage(JSON.stringify( {
+          host: 'projection-html5',
+          function: 'changeSlide',
+          url: window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search,
+          data: projecaoAtiva
+        } ), "*");    
   }  
 }
 
-$(document).on('keypress', function(e) {
+$(document).on('keydown', function(e) {
     var rows = $('#livesongs > tbody > tr');
     var tag = e.target.tagName.toLowerCase();
 
     if (tag != "input" && tag != "textarea"){
-       console.log(e.keyCode);   
-
        switch(e.keyCode) {
           case 37: // left
           {
@@ -240,3 +311,76 @@ window.onload = function() {
 };
 
 $("#msgSave").hide();
+
+$(function () { 
+  $('#jstree_demo_div').jstree({ 'core' : {
+      'data' : []
+  },
+  "types" : {
+      "default" : {
+        "icon" : "far fa-folder-open fa-fw pt-2"
+      },
+      'f-open' : {
+          'icon' : 'far fa-folder-open fa-fw pt-2'
+      },
+      'f-closed' : {
+          'icon' : 'far fa-folder fa-fw pt-2'
+      },
+      "song" : {
+        "icon" : "far fa-file-alt fa-fw pt-2"
+      }
+    },
+  "search":{
+    "show_only_matches" : true,
+    search_callback : function (str, node) {
+      if(node.data != null){
+        return node.text.toUpperCase().includes(str.toUpperCase()) || node.data.content.toUpperCase().includes(str.toUpperCase());
+      } else {
+        return node.text.toUpperCase().includes(str.toUpperCase());  
+      }
+    }    
+  },
+  "plugins" : [ "search", "types" ]
+   });
+
+  var to = false;
+  $('#treesearch').keyup(function () {
+    if(to) { clearTimeout(to); }
+    to = setTimeout(function () {
+      var v = $('#treesearch').val();
+      $('#jstree_demo_div').jstree(true).search(v);
+    }, 250);
+  });
+
+  /* Toggle between folder open and folder closed */
+  $("#jstree_demo_div").on('open_node.jstree', function (event, data) {
+      data.instance.set_type(data.node,'f-open');
+  });
+  $("#jstree_demo_div").on('close_node.jstree', function (event, data) {
+      data.instance.set_type(data.node,'f-closed');
+  });
+
+  $('#jstree_demo_div').on("changed.jstree", function (e, data) {
+    var louvor = {title: "", content: ""};
+    if(data.node != undefined && data.node != null && data.node.data != null){
+        louvor = data.node.data;
+        louvorAtivo = parseInt(data.node.id);      
+        $('#title').val(louvor.title);    
+        $('#content').val(louvor.content);
+    }
+    // console.log(louvor);
+  });
+
+  $('#jstree_demo_div').bind("dblclick.jstree", function (e) {
+      var instance = $.jstree.reference(this),
+      node = instance.get_node(e.target);
+     // Do my action
+     if(node.data != null){
+      var louvor = { id: louvorAtivo, type: "s" }
+      projecao.push(louvor);
+      reloadProjectionList();
+     }
+     // console.log(node.data);
+  });
+
+});

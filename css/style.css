@@ -1,3 +1,7 @@
+body{
+    background-color: #262626;
+}
+
 table {
     table-layout: fixed;
     word-wrap: break-word;
@@ -10,6 +14,10 @@ td {
     -moz-user-select: none;    
         user-select: none;
     cursor: pointer;
+}
+
+.noresize {
+  resize: none; 
 }
 
 #songs tbody>tr:hover {
@@ -26,7 +34,7 @@ td {
 
 #songs tbody { 
     display: block; 
-    height: 70vh; 
+    height: 35vh; 
     overflow-x: hidden !important;
     overflow-y: auto !important;
     width: 22.7vw;
@@ -41,6 +49,10 @@ td {
     padding: .375rem 7px;
 }
 
+#livesongs{
+    margin-bottom: 0;
+}
+
 #livesongs tbody>tr:hover {
     background-color: #2ee; /* Add a hover effect to all links, except for headers */
 }
@@ -49,12 +61,27 @@ td {
     background-color: #2ff; /* Add a hover effect to all links, except for headers */
 }
 
-#livesongs tbody td { width: 23.8vw; max-width: 23.8vw; }
+#livesongs tbody td { width: 23.6vw; max-width: 23.6vw; }
 
 #livesongs tbody { 
     display: block; 
-    height: 77vh; 
+    height: 79vh; 
     overflow-x: hidden !important;
     overflow-y: auto !important;
-    width: 48vw;
+    width: 47.5vw;
 }
+
+a{outline: 0;}
+.nav-link:hover, .nav-link {
+    color: white;
+}
+
+#tree_list1{
+    height: 70vh;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;    
+}
+
+/* .card-block{
+    background-color: #2e2e2e;
+} */
