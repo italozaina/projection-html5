@@ -22,7 +22,7 @@
   <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
     <a class="navbar-brand" href="#">Prototype - Projection HTML5</a>
     
-    <small class="navbar-text">Version 0.1.2</small>
+    <small class="navbar-text">Version 0.2.5</small>
   </nav>
 
   <!-- Modal -->
@@ -42,15 +42,62 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="excluirModal" tabindex="-1" role="dialog" aria-labelledby="excluirModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" class="close" data-dismiss="modal" aria-label="Close">
+            Cancelar
+          </button>        
+          <button id="confirmDeleteFromTree" type="button" class="btn btn-danger">Apagar</button>          
+        </div>        
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="makeFolderModal" tabindex="-1" role="dialog" aria-labelledby="makeFolderLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Criar pasta</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group p-2">                    
+            <input class="form-control" id="folderName" type="text" placeholder="Nome da pasta">
+          </div>          
+        </div>
+        <div class="modal-footer">
+          <button id="confirmMakeFolder" type="button" class="btn btn-primary">Criar</button>          
+        </div>        
+      </div>
+    </div>
+  </div>
 
   <main class="container-fluid">
     <div class="row pt-2">
       <div class="col-3">      
         <div class="card">     
-          <div class="card-header text-light bg-dark">Louvores</div>
+          <div class="card-header text-light bg-dark">Arquivos</div>
           <div class="card-block">
+            <div class="btn-toolbar bg-secondary justify-content-between px-2 py-1">
+              <div class="btn-group mr-2">
+                <button id="newSong" class="btn btn-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-alt fa-fw"></i></button>
+                <div id="listaDePastas" class="dropdown-menu" aria-labelledby="newSong" data-toggle="tooltip" data-placement="bottom" title="Criar música">
+                  <a class="dropdown-item" href="#">Louvores</a>
+                </div>
+                <button id="newFolder" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" title="Criar pasta"><i class="fas fa-folder-open fa-fw"></i></button> 
+              </div>
+              <div class="btn-group">
+                <button id="deleteFromTree" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Apagar pasta/arquivo"><i class="fas fa-trash fa-fw"></i></button> 
+              </div>              
+            </div>          
             <div class="form-group p-2">                    
-            <input class="form-control" id="treesearch" type="text" placeholder="Pesquisar louvor">
+            <input class="form-control" id="treesearch" type="text" placeholder="Pesquisar">
             </div>
             <div id="tree_list1">
               <div id="songList"></div>  
@@ -60,8 +107,8 @@
       </div>
       <div class="col-6">
       <div class="card">
-      <div class="card-header text-light bg-secondary">
-        <ul class="nav nav-tabs card-header-tabs nav-fill center-header-tabs">
+      <div class="card-header text-light bg-secondary">      
+        <ul id="guias" class="nav nav-tabs card-header-tabs nav-fill center-header-tabs">
           <li class="nav-item">
             <a class="nav-link active" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="live" aria-selected="true">Ao Vivo</a>
           </li>
@@ -95,7 +142,6 @@
             </form>
             <div class="btn-toolbar justify-content-between px-2 pb-1">
               <button id="save" class="btn btn-success"><i class="fas fa-save"></i> Salvar</button>
-              <button id="delete" class="btn btn-danger"><i class="fas fa-trash"></i> Deletar</button>
               <button id="export" class="btn btn-primary"><i class="fas fa-download"></i> Exportar</button>               
             </div>       
           </div>
