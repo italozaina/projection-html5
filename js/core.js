@@ -267,6 +267,7 @@ function generateLiveList(){
         var scripture = bible[item.b].chapters[item.c][i];
         $('#livesongs tbody').append('<tr data-id="'+f+'"><td>'+label+'</td><td>'+scripture+'</td></tr>');
         viewSlides+="<section data-background=\"#FF0000\">"+label+"<br><br>"+scripture+"</section>\n";
+        f++;
       }
       $('#livesongs tbody').append('<tr data-id="'+f+'"><td></td><td></td></tr>');
       f++;
