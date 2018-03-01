@@ -141,8 +141,13 @@ function reloadProjectionList(){
     $("#no-projection-msg").hide();
   }
   $("#projections tbody").html("");
-  $.each(projecao, function(i, louvor) {      
-        $('#projections tbody').append('<tr data-id="'+i+'"><td>'+dados[louvor.folderId].songs[louvor.id].title+'</td><td class="btn-mini"><button class="btn btn-danger btn-x">-</button></td></tr>');      
+  $.each(projecao, function(i, item) {     
+    if(item.type == "s") $('#projections tbody').append('<tr data-id="'+i+'"><td>'+dados[item.folderId].songs[item.id].title+'</td><td class="btn-mini"><button class="btn btn-danger btn-x">-</button></td></tr>');
+    if(item.type == "b") {
+      var label = bible[item.b].name+" "+(item.c+1)+":"+(item.from+1);
+      if(item.from < item.to) label += "-" + (item.to+1);
+      $('#projections tbody').append('<tr data-id="'+i+'"><td>'+label+'</td><td class="btn-mini"><button class="btn btn-danger btn-x">-</button></td></tr>');           
+    }
   });  
   $(".btn-x").click(function(){
     var id = $(this).closest('tr').attr("data-id");
@@ -255,7 +260,18 @@ function generateLiveList(){
       $('#livesongs tbody').append('<tr data-id="'+f+'"><td></td><td></td></tr>');
       f++;
       viewSlides+=telaPadrao;
-    }    
+    }
+    if(item.type == "b"){
+      for (var i = item.from; i <= item.to; i++) {
+        var label = bible[item.b].name+" "+(item.c+1)+":"+(i+1);
+        var scripture = bible[item.b].chapters[item.c][i];
+        $('#livesongs tbody').append('<tr data-id="'+f+'"><td>'+label+'</td><td>'+scripture+'</td></tr>');
+        viewSlides+="<section data-background=\"#FF0000\">"+label+"<br><br>"+scripture+"</section>\n";
+      }
+      $('#livesongs tbody').append('<tr data-id="'+f+'"><td></td><td></td></tr>');
+      f++;
+      viewSlides+=telaPadrao;      
+    } 
   });
 
   $('#livesongs > tbody > tr').click(function() {    
@@ -305,8 +321,8 @@ function mudaSlide(){
 $(document).on('keydown', function(e) {
     var rows = $('#livesongs > tbody > tr');
     var tag = e.target.tagName.toLowerCase();
-
-    if (tag != "input" && tag != "textarea"){
+    console.log(e.target);
+    if (tag != "input" && tag != "textarea" && tag != "a" && tag != "ul"){
        switch(e.keyCode) {
           case 37: // left
           {
