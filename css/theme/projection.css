@@ -19,7 +19,7 @@ body {
   font-size: 4vw;
   font-weight: normal;
   color: #fff; 
-  text-shadow: #000 0px 0px 10px, #000 0px 0px 30px, #000 0px 0px 50px, #000 0px 0px 70px;
+  text-shadow: #000 0px 0px 10px, #000 0px 0px 30px, #000 0px 0px 50px, #000 0px 0px 10px;
   text-transform: uppercase;
 }
 

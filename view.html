@@ -22,6 +22,26 @@
       display: none;
       text-transform: uppercase;
     }
+
+    html.scriptures body{      
+      background: #000000;
+    }     
+    html.scriptures p{
+      color: #FFFFFF;
+      width: 100vw;
+      margin: 0 auto;
+    }
+
+    .scripturetitle{
+      bottom: 1.5vh;
+      left: 5vh;
+      position: absolute;
+      display: none;
+      text-decoration: underline;
+    }
+    .scripturetitle small{
+      text-decoration: underline;
+    }        
   </style>
 </head>
 <body>
@@ -29,12 +49,13 @@
 
   <div class="reveal">
     <header class="songtitle"><small></small></header>
+    <footer class="scripturetitle"><small></small></footer>
   
     <div class="slides">
       <section>
-        <h1>teste</h1>
+        <h1></h1>
       </section>
-      <section data-state="showtitle">
+      <!-- <section data-state="showtitle">
       <style>
         .showtitle header.songtitle small:after{ content: "A ele a glória"; }
         .showtitle header.songtitle{ display: table; }         
@@ -42,7 +63,15 @@
        PORQUE DELE E POR ELE<br>
        PARA ELE<br>
        SÃO TODAS AS COISAS
-      </section>      
+      </section>
+      <section data-state="scriptures showscripturetitle">
+        <style>
+          .showscripturetitle footer.scripturetitle small:after{ content: "Mateus 1:1"; }
+          .showscripturetitle footer.scripturetitle{ display: block; }
+        </style>      
+        <p>MT 1.1</p>
+        <p>teste teste testeçç</p>
+      </section> -->
     </div>
 
   </div>
@@ -89,11 +118,11 @@
         progress: false,
         history: false,
         keyboard: true,
-        // center: true,
+        center: true,
         theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
         transition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
       });  
-      this.changeSlide(0);    
+      changeSlide(0);    
     }
     })()
   </script>

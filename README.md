@@ -1,6 +1,20 @@
 # Projection HTML5
 
-Projection for church
+Projection for church. Language support only (Brazilian portuguese pt-BR)
+
+![Live Dash](/demo/live.jpg)
+![Edit Dash](/demo/edit.jpg)
+![Bible Dash](/demo/bible.jpg)
+![Live View](/demo/live_view.jpg)
+![Bible View](/demo/bible_view.jpg)
+
+Features
+--------
+
+* Easy Lyric edition (An empty line make verse separation)
+* Make folder to organize lyrics
+* Fast way to create your projection list (just a Duble-click on song)
+* Bible support (NVI-BR)
 
 Technology Stack
 ----------------

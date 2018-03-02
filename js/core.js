@@ -265,8 +265,9 @@ function generateLiveList(){
       for (var i = item.from; i <= item.to; i++) {
         var label = bible[item.b].name+" "+(item.c+1)+":"+(i+1);
         var scripture = bible[item.b].chapters[item.c][i];
+        var refverse = "b"+item.b+"c"+item.c+"v"+i;
         $('#livesongs tbody').append('<tr data-id="'+f+'"><td>'+label+'</td><td>'+scripture+'</td></tr>');
-        viewSlides+="<section data-background=\"#FF0000\">"+label+"<br><br>"+scripture+"</section>\n";
+        viewSlides+="<section data-state=\"scriptures "+refverse+"\">\n<style>\n."+refverse+" footer.scripturetitle small:after{ content: \""+label+"\"; }\n."+refverse+" footer.scripturetitle{ display: block; }\n</style>\n<p>"+scripture+"</p>\n</section>\n";
         f++;
       }
       $('#livesongs tbody').append('<tr data-id="'+f+'"><td></td><td></td></tr>');
