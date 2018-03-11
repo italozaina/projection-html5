@@ -6,6 +6,7 @@ var projecaoAtiva = 0;
 var windowView;
 var viewSlides = "";
 var ref_selected = "0_0";
+var tabActive;
 
 var isFirefox = typeof InstallTrigger !== 'undefined';
 
@@ -323,8 +324,9 @@ function mudaSlide(){
 $(document).on('keydown', function(e) {
     var rows = $('#livesongs > tbody > tr');
     var tag = e.target.tagName.toLowerCase();
-    console.log(e.target);
-    if (tag != "input" && tag != "textarea" && tag != "a" && tag != "ul"){
+    var tabName = $('#guias a[aria-selected="true"]').attr('aria-controls');
+
+    if (tabName == "live" && tag != "input" && tag != "textarea" && tag != "a"){
        switch(e.keyCode) {
           case 37: // left
           {
@@ -382,7 +384,7 @@ $('#startProjection').click(function(){
 
 window.onload = function() {
   carregaLouvores();
-  startProjection();
+  // startProjection();
   reloadProjectionList();
 };
 
