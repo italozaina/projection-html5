@@ -4,6 +4,7 @@ var pastaAtiva = 0;
 var louvorAtivo = 0;
 var projecaoAtiva = 0;
 var windowView;
+var iframeView = document.getElementById("iframeProjection").contentWindow;
 var viewSlides = "";
 var ref_selected = "0_0";
 var tabActive;
@@ -299,6 +300,12 @@ function updateViewSlides(){
           data: viewSlides
         } ), "*");
   }
+  iframeView.postMessage(JSON.stringify( {
+          host: 'projection-html5',
+          function: 'reloadReveal',
+          url: window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search,
+          data: viewSlides
+        } ), "*");
 }
 
 function mudaProjecaoAtiva(){
@@ -317,8 +324,14 @@ function mudaSlide(){
           function: 'changeSlide',
           url: window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search,
           data: projecaoAtiva
+        } ), "*");
+  }
+    iframeView.postMessage(JSON.stringify( {
+          host: 'projection-html5',
+          function: 'changeSlide',
+          url: window.location.protocol + '//' + window.location.host + window.location.pathname + window.location.search,
+          data: projecaoAtiva
         } ), "*");    
-  }  
 }
 
 $(document).on('keydown', function(e) {
@@ -384,7 +397,7 @@ $('#startProjection').click(function(){
 
 window.onload = function() {
   carregaLouvores();
-  // startProjection();
+  startProjection();  
   reloadProjectionList();
 };
 
@@ -466,5 +479,6 @@ $(function () {
 
 
 });
+
 
 var ps = new PerfectScrollbar('#scrollblock');
